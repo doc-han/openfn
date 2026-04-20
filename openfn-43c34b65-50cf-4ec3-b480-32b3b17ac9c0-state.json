@@ -1,0 +1,67 @@
+{
+  "env": null,
+  "id": "43c34b65-50cf-4ec3-b480-32b3b17ac9c0",
+  "name": "sync",
+  "description": null,
+  "color": null,
+  "collections": {},
+  "concurrency": null,
+  "inserted_at": "2026-04-13T01:00:00Z",
+  "updated_at": "2026-04-20T11:16:05Z",
+  "scheduled_deletion": null,
+  "parent_id": null,
+  "history_retention_period": null,
+  "allow_support_access": false,
+  "dataclip_retention_period": null,
+  "project_credentials": {},
+  "requires_mfa": false,
+  "retention_policy": "retain_all",
+  "workflows": {
+    "Event-based-workflow": {
+      "id": "90a27fd0-bcbd-4d1c-94c8-5f0f6035bbfc",
+      "name": "Event-based workflow",
+      "inserted_at": "2026-04-20T11:16:05.167527Z",
+      "lock_version": 5,
+      "triggers": {
+        "webhook": {
+          "enabled": true,
+          "id": "91be3f65-0eed-4b6d-89b3-60a813c71b44",
+          "type": "webhook",
+          "webhook_reply": "before_start"
+        }
+      },
+      "jobs": {
+        "Transform-data": {
+          "id": "863ea502-8931-4001-88cf-53e2ce7f1918",
+          "name": "Transform data",
+          "body": "// Validate and transform the data you've received...\nfn(state => {\n  console.log(\"Do some data transformation here\");\n})\nconsole.log(\"i changed this on github\")\n",
+          "project_credential_id": null,
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Arcgis": {
+          "id": "ab457761-5d28-4541-816a-dd6436a28a71",
+          "name": "Arcgis",
+          "body": "// Check out the Job Writing Guide for help getting started:\n// https://docs.openfn.org/documentation/jobs/job-writing-guide\n\n// some changes here",
+          "project_credential_id": null,
+          "adaptor": "@openfn/language-arcgis@1.0.7"
+        }
+      },
+      "edges": {
+        "webhook->Transform-data": {
+          "enabled": true,
+          "id": "7eb25a8f-7dab-459d-8c1a-02762cac2cdb",
+          "target_job_id": "863ea502-8931-4001-88cf-53e2ce7f1918",
+          "source_trigger_id": "91be3f65-0eed-4b6d-89b3-60a813c71b44",
+          "condition_type": "always"
+        },
+        "Transform-data->Arcgis": {
+          "enabled": true,
+          "id": "3a68dc7d-4421-49b6-816c-711520850f40",
+          "target_job_id": "ab457761-5d28-4541-816a-dd6436a28a71",
+          "source_job_id": "863ea502-8931-4001-88cf-53e2ce7f1918",
+          "condition_type": "on_job_success"
+        }
+      }
+    }
+  }
+}
